@@ -15,7 +15,6 @@ module.exports = function (rawData) {
 			var command = multipleEntries[0].split('=');
 
 			_.extend(data, {
-				device: 'atrack_command',
 				is_data: false,
 				command_type: command[0].substr(1, command[0].length - 1),
 				command_data: command[1]
