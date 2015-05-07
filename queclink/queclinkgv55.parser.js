@@ -15,8 +15,8 @@ module.exports = function (rawData) {
 
 		//default data always in every message
 		_.extend(data, {
-			command_header: command[0],
-			command_type: command[1],
+			message_header: command[0],
+			message_type: command[1],
 			protocol: parsedData[1],
 			device: parsedData[2],
 			device_name: parsedData[3],
@@ -40,7 +40,7 @@ module.exports = function (rawData) {
 
 			_.extend(data, {
 				is_data: false,
-				command_data: parsedData.join()
+				message: parsedData.join()
 			});
 
 			return data;
@@ -55,7 +55,7 @@ module.exports = function (rawData) {
 			command[1] === 'GTSPD' || command[1] === 'GTSOS' || command[1] === 'GTRTL' ||
 			command[1] === 'GTDOG' || command[1] === 'GTIGL' || command[1] === 'GTHBM') {
 			_.extend(data, {
-				command_data: parsedData.join(),
+				message: parsedData.join(),
 				reserved1: parsedData[4],
 				report_id: parsedData[5],
 				number: parsedData[6],

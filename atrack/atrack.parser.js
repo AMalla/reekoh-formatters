@@ -16,8 +16,8 @@ module.exports = function (rawData) {
 
 			_.extend(data, {
 				is_data: false,
-				command_type: command[0].substr(1, command[0].length - 1),
-				command_data: command[1]
+				message_type: command[0].substr(1, command[0].length - 1),
+				message: command[1]
 			});
 
 			return data;

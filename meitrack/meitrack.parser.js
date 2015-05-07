@@ -12,14 +12,14 @@ module.exports = function (rawData) {
 		_.extend(data, {
 			header: parsedData[0],
 			device: parsedData[1],
-			command_type: parsedData[2]
+			message_type: parsedData[2]
 		});
 
-		if (data.command_type !== 'AAA') {
+		if (data.message_type !== 'AAA') {
 			parsedData = parsedData.splice(0, 3);
 			_.extend(data, {
 				is_data: false,
-				command_data: parsedData.join()
+				message: parsedData.join()
 			});
 
 			return data;
