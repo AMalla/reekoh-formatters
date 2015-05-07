@@ -22,8 +22,8 @@ module.exports = function (rawData) {
 
 			_.extend(data, {
 				is_data: false,
-				command_type: command[0],
-				command_data: command[1]
+				message_type: command[0],
+				message: command[1]
 			});
 
 			return data;

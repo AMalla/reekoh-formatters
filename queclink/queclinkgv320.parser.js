@@ -15,8 +15,8 @@ module.exports = function (rawData) {
 
 		//default data always in every message
 		_.extend(data, {
-			command_header: command[0],
-			command_type: command[1],
+			message_header: command[0],
+			message_type: command[1],
 			protocol: parsedData[1],
 			device: parsedData[2],
 			device_name: parsedData[3],
@@ -38,7 +38,7 @@ module.exports = function (rawData) {
 			parsedData = parsedData.splice(0, 1); //removed only the header to match documentation
 			_.extend(data, {
 				is_data: false,
-				command_data: parsedData.join()
+				message: parsedData.join()
 			});
 
 			return data;
