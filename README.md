@@ -2,8 +2,8 @@
 Reekoh Data and Message Parsers. These parsers are custom code run by the Mesh engine in order to convert the different data formats coming from the devices to standard JSON.
  
 Parsers are categorized in two:
- * Standard Parsers - these are written by the Reekoh team.
- * Custom Parsers - these are custom code written by users to support devices which Reekoh does not have first-class support.
+ * **Standard Parsers** - these are written by the Reekoh team.
+ * **Custom Parsers** - these are custom code written by users to support devices which Reekoh does not have first-class support.
  
 ## Code Format
 
@@ -21,7 +21,7 @@ module.exports = function (rawData) {
 
 ## Return Value
 
-The Mesh engine only accepts a valid JS Object an an Array/Collection of JS Objects as return value. If an error occurs within the parser code, it will be handled by the Mesh engine accordingly.
+The Mesh engine only accepts a valid JS Object or an Array/Collection of JS Objects as return value. If an error occurs within the parser code, it will be handled by the Mesh engine accordingly so return it.
 
 ## Libraries
 
@@ -46,7 +46,7 @@ You are also given access to Node's native API. The following modules is availab
 * timers
 * util
 
-These modules need to be "require'ed" before you can use them. Sample code below:
+These modules need to be **"require'ed"** before you can use them. Sample code below:
 
 ```javascript
 module.exports = function (rawData) {
