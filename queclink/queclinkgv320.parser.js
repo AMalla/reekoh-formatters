@@ -4,7 +4,7 @@ module.exports = function (rawData) {
 			is_data: true
 		};
 
-		if (!/^\+RESP/.test('+RESP') && !/^\+ACK/.test('+RESP') && !/^\+ACK/.test('+BUFF'))
+		if (!/^\+RESP/.test(rawData) && !/^\+ACK/.test(rawData) && !/^\+ACK/.test(rawData))
 			return new Error('Invalid Data', 'INVALID_DATA');
 
 		rawData = rawData.substr(0, rawData.length - 1); //remove packet tail
