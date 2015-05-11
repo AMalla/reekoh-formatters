@@ -30,7 +30,7 @@ module.exports = function (rawData) {
 		}
 
 		_.extend(data, {
-			dtm: moment(parsedData[2], 'HHmmssDDMMYY').toDate(),
+			dtm: parsedData[2],
 			event_id: parsedData[3]
 		});
 

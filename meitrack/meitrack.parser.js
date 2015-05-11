@@ -28,7 +28,7 @@ module.exports = function (rawData) {
 		_.extend(data, {
 			event_code: parsedData[3],
 			coordinates: [parsedData[5], parsedData[4]],
-			dtm: moment(parsedData[6], 'YYMMDDHHmmss').toDate(),
+			dtm: parsedData[6],
 			status: parsedData[7],
 			satellite_no: parsedData[8],
 			signal: parsedData[9],
