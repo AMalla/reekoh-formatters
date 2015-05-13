@@ -39,14 +39,14 @@ exports.parse = function () {
 
 		if (header === 'SYS') {
 			_.extend(data, {
-				sys: 1,
+				sys: true,
 				device_name: body[0],
 				firmware_v: body[1],
 				hardware_v: body[2]
 			});
 		} else if (header === 'GPS') {
 			_.extend(data, {
-				gps: 1,
+				gps: true,
 				fix_flag: body[0],
 				satellite_no: body[1],
 				hardware_v: body[2],
@@ -61,7 +61,7 @@ exports.parse = function () {
 			});
 		} else if (header === 'GSM') {
 			_.extend(data, {
-				gms: 1,
+				gms: true,
 				reg_status: body[0],
 				signal: body[1],
 				mcc1_ctry: body[2],
@@ -82,19 +82,19 @@ exports.parse = function () {
 			});
 		} else if (header === 'COT') {
 			_.extend(data, {
-				cot: 1,
+				cot: true,
 				odometer: body[0],
 				enginehour: body[1]
 			});
 		} else if (header === 'ADC') {
 			_.extend(data, {
-				adc: 1,
+				adc: true,
 				ext_pow_volt: body[0],
 				bkp_bat_volt: body[1]
 			});
 		} else if (header === 'DTT') {
 			_.extend(data, {
-				dit: 1,
+				dit: true,
 				dev_status: body[0],
 				dtt_reserved: body[1],
 				geo_status1: body[2],
@@ -104,23 +104,23 @@ exports.parse = function () {
 			});
 		} else if (header === 'ETD') {
 			_.extend(data, {
-				etd: 1,
+				etd: true,
 				etd_data: dataField[1]
 			});
 		} else if (header === 'OBD') {
 			_.extend(data, {
-				obd: 1,
+				obd: true,
 				obd_data: body[0]
 			});
 
 		} else if (header === 'FUL') {
 			_.extend(data, {
-				ful: 1,
+				ful: true,
 				ful_data: body[0]
 			});
 		} else if (header === 'TRU') {
 			_.extend(data, {
-				tru: 1,
+				tru: true,
 				tru_data: body[0]
 			});
 		}
