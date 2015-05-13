@@ -4,16 +4,15 @@ module.exports = function (rawData) {
 			is_data: true
 		};
 
-		if (!/^\\+RESP/.test(rawData) && !/^\\+ACK/.test(rawData) && !/^\\+ACK/.test(rawData))
+		if (!/^\+RESP/.test(rawData) && !/^\+ACK/.test(rawData) && !/^\+ACK/.test(rawData))
 			return new Error('Invalid Data', 'INVALID_DATA');
 
-		rawData = rawData.substr(0, rawData.length - 1); //remove packet tail
+		rawData = rawData.substr(0, rawData.length - 1);
 
 		var parsedData = rawData.split(',');
 
 		var command = parsedData[0].split(':');
 
-		//default data always in every message
 		_.extend(data, {
 			message_header: command[0],
 			message_type: command[1],
@@ -21,11 +20,11 @@ module.exports = function (rawData) {
 			device: parsedData[2],
 			device_name: parsedData[3],
 			dtm: parsedData[parsedData.length - 2],
-			count_number: parsedData[5],
-			ack: '+SACK:'.concat(parsedData[5]).concat('$')
+			count_number: parsedData[parsedData.length - 1],
+			ack: '+SACK:'.concat(parsedData[parsedData.length - 1]).concat('$'),
+			raw_data: rawData
 		});
 
-		//all acknowledgement and non-location reports/events will be processed here and returned
 		if (command[0] === '+ACK' || ((command[0] === '+RESP' || command[0] === '+BUFF') &&
 			(command[1] === 'GTINF' || command[1] === 'GTGPS' || command[1] === 'GTALL' ||
 			command[1] === 'GTCID' || command[1] === 'GTCSQ' || command[1] === 'GTVER' ||
@@ -35,7 +34,7 @@ module.exports = function (rawData) {
 			command[1] === 'GTPDP' || command[1] === 'GTGSM' || command[1] === 'GTPHD' ||
 			command[1] === 'GTFSD' || command[1] === 'GTUFS'))) {
 
-			parsedData = parsedData.splice(0, 1); //removed only the header to match documentation
+			parsedData = parsedData.splice(0, 1);
 
 			_.extend(data, {
 				is_data: false,
@@ -45,10 +44,6 @@ module.exports = function (rawData) {
 			return data;
 		}
 
-		//all location related reports will be processed here will list down supported reports
-		//GTTOW, GTDIS, GTIOB, GTSPD, GTSOS, GTRTL, GTDOG, GTIGL, GTHBM
-
-		//Buffer logic not covered
 
 		if (command[1] === 'GTTOW' || command[1] === 'GTDIS' || command[1] === 'GTIOB' ||
 			command[1] === 'GTSPD' || command[1] === 'GTSOS' || command[1] === 'GTRTL' ||

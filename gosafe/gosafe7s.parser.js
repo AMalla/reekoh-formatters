@@ -7,16 +7,16 @@ module.exports = function (rawData) {
 		if (!/^\*GS/.test(rawData))
 			return new Error('Invalid Data', 'INVALID_DATA');
 
-		rawData = rawData.substr(0, rawData.length - 1); //remove packet tail
+		rawData = rawData.substr(0, rawData.length - 1);
 
 		var parsedData = rawData.split(',');
 
 		_.extend(data, {
 			protocol: parsedData[0],
-			device: parsedData[1]
+			device: parsedData[1],
+			raw_data: rawData
 		});
 
-		//comands have a maximum of 3 partitions per data
 		if (parsedData.length <= 3) {
 			var command = parsedData[2].split(':');
 

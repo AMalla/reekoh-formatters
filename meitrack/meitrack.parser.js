@@ -12,7 +12,8 @@ module.exports = function (rawData) {
 		_.extend(data, {
 			header: parsedData[0],
 			device: parsedData[1],
-			message_type: parsedData[2]
+			message_type: parsedData[2],
+			raw_data: rawData
 		});
 
 		if (data.message_type !== 'AAA') {

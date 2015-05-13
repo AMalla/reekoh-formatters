@@ -7,25 +7,24 @@ module.exports = function (rawData) {
 		if (!/^\+RESP/.test(rawData) && !/^\+ACK/.test(rawData) && !/^\+ACK/.test(rawData))
 			return new Error('Invalid Data', 'INVALID_DATA');
 
-		rawData = rawData.substr(0, rawData.length - 1); //remove packet tail
+		rawData = rawData.substr(0, rawData.length - 1);
 
 		var parsedData = rawData.split(',');
 
 		var command = parsedData[0].split(':');
 
-		//default data always in every message
 		_.extend(data, {
 			message_header: command[0],
 			message_type: command[1],
 			protocol: parsedData[1],
 			device: parsedData[2],
 			device_name: parsedData[3],
-			dtm: moment(parsedData[parsedData.length - 2], 'YYYYMMDDHHmmss').toDate(),
+			dtm: parsedData[parsedData.length - 2],
 			count_number: parsedData[parsedData.length - 1],
-			ack:'+SACK:' + parsedData[parsedData.length - 1] + '$'
+			ack: '+SACK:'.concat(parsedData[parsedData.length - 1]).concat('$'),
+			raw_data: rawData
 		});
 
-		//all acknowledgement and non-location reports/events will be processed here and returned
 		if (command[0] === '+ACK' || ((command[0] === '+RESP' || command[0] === '+BUFF') &&
 			(command[1] === 'GTINF' || command[1] === 'GTGPS' || command[1] === 'GTALL' ||
 			command[1] === 'GTCID' || command[1] === 'GTCSQ' || command[1] === 'GTVER' ||
@@ -35,7 +34,7 @@ module.exports = function (rawData) {
 			command[1] === 'GTPDP' || command[1] === 'GTGSM' || command[1] === 'GTPHD' ||
 			command[1] === 'GTFSD' || command[1] === 'GTUFS'))) {
 
-			parsedData = parsedData.splice(0, 1); //removed only the header to match documentation
+			parsedData = parsedData.splice(0, 1);
 			_.extend(data, {
 				is_data: false,
 				message: parsedData.join()
@@ -44,8 +43,7 @@ module.exports = function (rawData) {
 			return data;
 		}
 
-		//all location related reports will be processed here will list down supported reports
-		//GTTOW, GTDIS, GTIOB, GTSPD, GTSOS, GTRTL, GTDOG, GTIGL, GTHBM
+
 		if (command[1] === 'GTTOW' || command[1] === 'GTDIS' || command[1] === 'GTIOB' ||
 			command[1] === 'GTSPD' || command[1] === 'GTSOS' || command[1] === 'GTRTL' ||
 			command[1] === 'GTDOG' || command[1] === 'GTIGL' || command[1] === 'GTHBM') {
@@ -58,7 +56,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[9],
 				altitude: parsedData[10],
 				coordinates: [parsedData[11], parsedData[12]],
-				gps_utc_time: moment(parsedData[13], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[13],
 				mcc: parsedData[14],
 				lnc: parsedData[15],
 				lac: parsedData[16],
@@ -76,7 +74,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[9],
 				altitude: parsedData[10],
 				coordinates: [parsedData[11], parsedData[12]],
-				gps_utc_time: moment(parsedData[13], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[13],
 				mcc: parsedData[14],
 				lnc: parsedData[15],
 				lac: parsedData[16],
@@ -103,7 +101,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[10],
 				altitude: parsedData[11],
 				coordinates: [parsedData[12], parsedData[13]],
-				gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[14],
 				mcc: parsedData[15],
 				lnc: parsedData[16],
 				lac: parsedData[17],
@@ -134,7 +132,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[9],
 				altitude: parsedData[10],
 				coordinates: [parsedData[11], parsedData[12]],
-				gps_utc_time: moment(parsedData[13], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[13],
 				mcc: parsedData[14],
 				lnc: parsedData[15],
 				lac: parsedData[16],
@@ -150,7 +148,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -168,7 +166,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[10],
 				altitude: parsedData[11],
 				coordinates: [parsedData[12], parsedData[13]],
-				gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[14],
 				mcc: parsedData[15],
 				lnc: parsedData[16],
 				lac: parsedData[17],
@@ -190,7 +188,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[9],
 				altitude: parsedData[10],
 				coordinates: [parsedData[11], parsedData[12]],
-				gps_utc_time: moment(parsedData[13], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[13],
 				mcc: parsedData[14],
 				lnc: parsedData[15],
 				lac: parsedData[16],
@@ -211,7 +209,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[12],
 				altitude: parsedData[13],
 				coordinates: [parsedData[14], parsedData[15]],
-				gps_utc_time: moment(parsedData[16], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[16],
 				mcc: parsedData[17],
 				lnc: parsedData[18],
 				lac: parsedData[19],
@@ -235,7 +233,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[15],
 				altitude: parsedData[16],
 				coordinates: [parsedData[17], parsedData[18]],
-				gps_utc_time: moment(parsedData[19], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[19],
 				mcc: parsedData[20],
 				lnc: parsedData[21],
 				lac: parsedData[22],
@@ -250,7 +248,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[6],
 				altitude: parsedData[7],
 				coordinates: [parsedData[8], parsedData[9]],
-				gps_utc_time: moment(parsedData[10], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[10],
 				mcc: parsedData[11],
 				lnc: parsedData[12],
 				lac: parsedData[13],
@@ -265,7 +263,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -280,7 +278,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -295,7 +293,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -310,7 +308,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -325,7 +323,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -343,7 +341,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[10],
 				altitude: parsedData[11],
 				coordinates: [parsedData[12], parsedData[13]],
-				gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[14],
 				mcc: parsedData[15],
 				lnc: parsedData[16],
 				lac: parsedData[17],
@@ -358,7 +356,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -375,7 +373,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -393,7 +391,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[8],
 				altitude: parsedData[9],
 				coordinates: [parsedData[10], parsedData[11]],
-				gps_utc_time: moment(parsedData[12], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[12],
 				mcc: parsedData[13],
 				lnc: parsedData[14],
 				lac: parsedData[15],
@@ -410,7 +408,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[8],
 				altitude: parsedData[9],
 				coordinates: [parsedData[10], parsedData[11]],
-				gps_utc_time: moment(parsedData[12], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[12],
 				mcc: parsedData[13],
 				lnc: parsedData[14],
 				lac: parsedData[15],
@@ -429,7 +427,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[10],
 				altitude: parsedData[11],
 				coordinates: [parsedData[12], parsedData[13]],
-				gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[14],
 				mcc: parsedData[15],
 				lnc: parsedData[16],
 				lac: parsedData[17],
@@ -445,7 +443,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[8],
 				altitude: parsedData[9],
 				coordinates: [parsedData[10], parsedData[11]],
-				gps_utc_time: moment(parsedData[12], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[12],
 				mcc: parsedData[13],
 				lnc: parsedData[14],
 				lac: parsedData[15],
@@ -463,7 +461,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[9],
 				altitude: parsedData[10],
 				coordinates: [parsedData[11], parsedData[12]],
-				gps_utc_time: moment(parsedData[13], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[13],
 				mcc: parsedData[14],
 				lnc: parsedData[15],
 				lac: parsedData[16],
@@ -479,7 +477,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[8],
 				altitude: parsedData[9],
 				coordinates: [parsedData[10], parsedData[11]],
-				gps_utc_time: moment(parsedData[12], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[12],
 				mcc: parsedData[13],
 				lnc: parsedData[14],
 				lac: parsedData[15],
@@ -497,7 +495,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[10],
 				altitude: parsedData[11],
 				coordinates: [parsedData[12], parsedData[13]],
-				gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[14],
 				mcc: parsedData[15],
 				lnc: parsedData[16],
 				lac: parsedData[17],
@@ -524,7 +522,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[7],
 				altitude: parsedData[8],
 				coordinates: [parsedData[9], parsedData[10]],
-				gps_utc_time: moment(parsedData[11], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[11],
 				mcc: parsedData[12],
 				lnc: parsedData[13],
 				lac: parsedData[14],
@@ -541,7 +539,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[9],
 				altitude: parsedData[10],
 				coordinates: [parsedData[11], parsedData[12]],
-				gps_utc_time: moment(parsedData[13], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[13],
 				mcc: parsedData[14],
 				lnc: parsedData[15],
 				lac: parsedData[16],
@@ -561,7 +559,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[8],
 				altitude: parsedData[9],
 				coordinates: [parsedData[10], parsedData[11]],
-				gps_utc_time: moment(parsedData[12], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[12],
 				mcc: parsedData[13],
 				lnc: parsedData[14],
 				lac: parsedData[15],
@@ -579,7 +577,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[10],
 				altitude: parsedData[11],
 				coordinates: [parsedData[12], parsedData[13]],
-				gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[14],
 				mcc: parsedData[15],
 				lnc: parsedData[16],
 				lac: parsedData[17],
@@ -605,7 +603,7 @@ module.exports = function (rawData) {
 					azimuth: parsedData[10],
 					altitude: parsedData[11],
 					coordinates: [parsedData[12], parsedData[13]],
-					gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+					gps_utc_time: parsedData[14],
 					mcc: parsedData[15],
 					lnc: parsedData[16],
 					lac: parsedData[17],
@@ -640,7 +638,7 @@ module.exports = function (rawData) {
 					azimuth: parsedData[10],
 					altitude: parsedData[11],
 					coordinates: [parsedData[12], parsedData[13]],
-					gps_utc_time: moment(parsedData[14], 'YYYYMMDDHHmmss').toDate(),
+					gps_utc_time: parsedData[14],
 					mcc: parsedData[15],
 					lnc: parsedData[16],
 					lac: parsedData[17],
@@ -667,7 +665,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[12],
 				altitude: parsedData[13],
 				coordinates: [parsedData[14], parsedData[15]],
-				gps_utc_time: moment(parsedData[16], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[16],
 				mcc: parsedData[17],
 				lnc: parsedData[18],
 				lac: parsedData[19],
@@ -727,7 +725,7 @@ module.exports = function (rawData) {
 				azimuth: parsedData[33],
 				altitude: parsedData[34],
 				coordinates: [parsedData[35], parsedData[36]],
-				gps_utc_time: moment(parsedData[37], 'YYYYMMDDHHmmss').toDate(),
+				gps_utc_time: parsedData[37],
 				mcc: parsedData[38],
 				lnc: parsedData[39],
 				lac: parsedData[40],
