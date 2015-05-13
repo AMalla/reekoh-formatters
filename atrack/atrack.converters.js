@@ -1,17 +1,20 @@
-module.exports = function (data) {
-    try {
+exports.convert = function () {
 
-        var save_data = {};
+    var save_data = {};
 
-        if (data.is_data){
-            save_data.coordinates
-        }
-        else {
+    _.extend(save_data, data);
 
-        }
+    if (data.gps_dtm)
+        save_data.gps_dtm = moment(data.gps_dtm, 'YYYYMMDDHHmmss').toDate();
+
+    if (data.dtm)
+        save_data.dtm = moment(data.dtm, 'YYYYMMDDHHmmss').toDate();
+
+    if (data.position_dtm)
+        save_data.position_dtm = moment(data.position_dtm, 'YYYYMMDDHHmmss').toDate();
 
 
-    } catch (err) {
-        return err;
-    }
+    delete save_data['raw_data'];
+
+    exit(save_data);
 };

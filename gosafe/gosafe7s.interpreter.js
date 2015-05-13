@@ -12,7 +12,8 @@ exports.parse = function () {
 
 	_.extend(data, {
 		protocol: parsedData[0],
-		device: parsedData[1]
+		device: parsedData[1],
+		raw_data: rawData
 	});
 	if (parsedData.length <= 3) {
 		var command = parsedData[2].split(':');
@@ -28,7 +29,7 @@ exports.parse = function () {
 
 	_.extend(data, {
 		dtm: parsedData[2],
-		event_id: parsedData[3]
+		event_id: parsedData[3],
 	});
 
 	for (var i = 4, len = parsedData.length; i < len; i++) {
@@ -38,14 +39,14 @@ exports.parse = function () {
 
 		if (header === 'SYS') {
 			_.extend(data, {
-				data_type: 'SYS',
+				sys: 1,
 				device_name: body[0],
 				firmware_v: body[1],
 				hardware_v: body[2]
 			});
 		} else if (header === 'GPS') {
 			_.extend(data, {
-				data_type: 'GPS',
+				gps: 1,
 				fix_flag: body[0],
 				satellite_no: body[1],
 				hardware_v: body[2],
@@ -60,7 +61,7 @@ exports.parse = function () {
 			});
 		} else if (header === 'GSM') {
 			_.extend(data, {
-				data_type: 'GSM',
+				gms: 1,
 				reg_status: body[0],
 				signal: body[1],
 				mcc1_ctry: body[2],
@@ -81,19 +82,19 @@ exports.parse = function () {
 			});
 		} else if (header === 'COT') {
 			_.extend(data, {
-				data_type: 'COT',
+				cot: 1,
 				odometer: body[0],
 				enginehour: body[1]
 			});
 		} else if (header === 'ADC') {
 			_.extend(data, {
-				data_type: 'ADC',
+				adc: 1,
 				ext_pow_volt: body[0],
 				bkp_bat_volt: body[1]
 			});
 		} else if (header === 'DTT') {
 			_.extend(data, {
-				data_type: 'DTT',
+				dit: 1,
 				dev_status: body[0],
 				dtt_reserved: body[1],
 				geo_status1: body[2],
@@ -103,27 +104,28 @@ exports.parse = function () {
 			});
 		} else if (header === 'ETD') {
 			_.extend(data, {
-				data_type: 'ETD',
+				etd: 1,
 				etd_data: dataField[1]
 			});
 		} else if (header === 'OBD') {
 			_.extend(data, {
-				data_type: 'OBD',
+				obd: 1,
 				obd_data: body[0]
 			});
 
 		} else if (header === 'FUL') {
 			_.extend(data, {
-				data_type: 'FUL',
+				ful: 1,
 				ful_data: body[0]
 			});
 		} else if (header === 'TRU') {
 			_.extend(data, {
-				data_type: 'TRU',
+				tru: 1,
 				tru_data: body[0]
 			});
 		}
 	}
 
 	exit(data);
+
 };
