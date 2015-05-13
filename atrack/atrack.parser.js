@@ -17,7 +17,8 @@ module.exports = function (rawData) {
 			_.extend(data, {
 				is_data: false,
 				message_type: command[0].substr(1, command[0].length - 1),
-				message: command[1]
+				message: command[1],
+				raw_data: multipleEntries[0]
 			});
 
 			return data;
@@ -83,7 +84,8 @@ module.exports = function (rawData) {
 			temp: parsedData[19],
 			temp2: parsedData[20],
 			text_msg: parsedData[21],
-			ack: ack
+			ack: ack,
+			raw_data: processEntry
 		});
 
 		dataCollection.push(data);
@@ -126,7 +128,8 @@ module.exports = function (rawData) {
 				temp: parsedData[19],
 				temp2: parsedData[20],
 				text_msg: parsedData[21],
-				ack: ack
+				ack: ack,
+				raw_data: entry
 			});
 
 			dataCollection.push(dataEntry);

@@ -4,7 +4,7 @@ module.exports = function (rawData) {
 			is_data: true
 		};
 
-		if (!/^\\+RESP/.test(rawData) && !/^\\+ACK/.test(rawData) && !/^\\+ACK/.test(rawData))
+		if (!/^\+RESP/.test(rawData) && !/^\+ACK/.test(rawData) && !/^\+ACK/.test(rawData))
 			return new Error('Invalid Data', 'INVALID_DATA');
 
 		rawData = rawData.substr(0, rawData.length - 1); //remove packet tail
@@ -22,7 +22,8 @@ module.exports = function (rawData) {
 			device_name: parsedData[3],
 			dtm: parsedData[parsedData.length - 2],
 			count_number: parsedData[parsedData.length - 1],
-			ack: '+SACK:'.concat(parsedData[parsedData.length - 1]).concat('$') // use for ack receipt
+			ack: '+SACK:'.concat(parsedData[parsedData.length - 1]).concat('$'), // use for ack receipt
+			raw_data: rawData
 		});
 
 		//all acknowledgement and non-location reports/events will be processed here and returned

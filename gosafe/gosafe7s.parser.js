@@ -13,7 +13,8 @@ module.exports = function (rawData) {
 
 		_.extend(data, {
 			protocol: parsedData[0],
-			device: parsedData[1]
+			device: parsedData[1],
+			raw_data: rawData
 		});
 
 		if (parsedData.length <= 3) {
