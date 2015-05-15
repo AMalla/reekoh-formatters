@@ -36,7 +36,7 @@ exports.parse = function () {
 		direction: parsedData[11],
 		accuracy: parsedData[12],
 		altitude: parsedData[13],
-		odometer: parsedData[14],
+		mileage: parsedData[14],
 		run_time: parsedData[15],
 		base_station: parsedData[16],
 		io_status: parsedData[17],
