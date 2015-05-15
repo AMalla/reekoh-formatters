@@ -35,29 +35,30 @@ exports.parse = function () {
     multipleEntries.forEach(function (entry) {
 
         var parsedEntry = entry.split(','),
-            ctr = 0,
-            data = {
-                is_data : true,
-                protocol: fixedData.protocol,
-                device: fixedData.device
-            };
+            ctr = 0;
 
         if (first === true) {
             first = false;
             ctr = 2;
         }
 
+
+        var  data = {
+                is_data : true,
+                protocol: fixedData.protocol,
+                device: fixedData.device,
+                dtm: parsedEntry[ctr],
+                event_id: parsedEntry[1 + ctr],
+                raw_data: rawData,
+                raw_data_entry: entry
+            };
+
+
         for (var i = 2 + ctr; i < parsedEntry.length; i++) {
 
             var parsedEvents = parsedEntry[i].split(':'),
                 header = parsedEvents[0],
                 body = parsedEvents[1].split(';');
-
-            _.extend(data, {
-                protocol: fixedData.protocol,
-                device: fixedData.device,
-                raw_data: rawData
-            });
 
             if (header === 'SYS') {
                 _.extend(data, {

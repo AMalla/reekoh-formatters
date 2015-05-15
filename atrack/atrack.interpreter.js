@@ -84,7 +84,8 @@ exports.parse = function () {
 		temp2: parsedData[20],
 		text_msg: parsedData[21],
 		ack: ack,
-		raw_data: processEntry
+		raw_data: rawData,
+		raw_data_entry: processEntry
 	});
 
 	dataCollection.push(data);
@@ -128,7 +129,8 @@ exports.parse = function () {
 			temp2: parsedData[20],
 			text_msg: parsedData[21],
 			ack: ack,
-			raw_data: entry
+			raw_data: rawData,
+			raw_data_entry: entry
 		});
 
 		dataCollection.push(dataEntry);
