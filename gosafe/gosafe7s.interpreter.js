@@ -1,5 +1,4 @@
 exports.parse = function () {
-
     if (!/^\*GS/.test(rawData))
          throw new Error('Invalid Data', 'INVALID_DATA');
 
@@ -153,5 +152,4 @@ exports.parse = function () {
     });
 
     exit(dataCollection);
-
 };

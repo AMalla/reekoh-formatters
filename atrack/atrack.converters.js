@@ -1,20 +1,16 @@
 exports.convert = function () {
+    var convertedData = _.extend({}, data);
 
-    var save_data = {};
+    if (convertedData.gps_dtm)
+        convertedData.gps_dtm = moment(convertedData.gps_dtm, 'YYYYMMDDHHmmss').toDate();
 
-    _.extend(save_data, data);
+    if (convertedData.dtm)
+        convertedData.dtm = moment(convertedData.dtm, 'YYYYMMDDHHmmss').toDate();
 
-    if (data.gps_dtm)
-        save_data.gps_dtm = moment(data.gps_dtm, 'YYYYMMDDHHmmss').toDate();
+    if (convertedData.position_dtm)
+        convertedData.position_dtm = moment(convertedData.position_dtm, 'YYYYMMDDHHmmss').toDate();
 
-    if (data.dtm)
-        save_data.dtm = moment(data.dtm, 'YYYYMMDDHHmmss').toDate();
+    delete convertedData.raw_data;
 
-    if (data.position_dtm)
-        save_data.position_dtm = moment(data.position_dtm, 'YYYYMMDDHHmmss').toDate();
-
-
-    delete save_data['raw_data'];
-
-    exit(save_data);
+    exit(convertedData);
 };

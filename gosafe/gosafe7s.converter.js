@@ -1,13 +1,10 @@
 exports.convert = function () {
+    var convertedData = _.extend({}, data);
 
-    var save_data = {};
+    if (convertedData.dtm)
+        convertedData.dtm = moment(convertedData.dtm, 'HHmmssDDMMYY').toDate();
 
-    _.extend(save_data, data);
+    delete convertedData.raw_data;
 
-    if (data.dtm)
-        save_data.dtm = moment(data.dtm, 'HHmmssDDMMYY').toDate();
-
-    delete save_data['raw_data'];
-
-    exit(save_data);
+    exit(convertedData);
 };
