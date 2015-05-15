@@ -1,20 +1,5 @@
 exports.convert = function () {
-
-    var convertedDataArr = [];
-
-    if (_.isArray(data)){
-
-        data.forEach(function (dataEntry) {
-            convertedDataArr.push(processData(dataEntry));
-        });
-
-    }else{
-        convertedDataArr.push(processData(data));
-    }
-
-    exit(convertedDataArr);
-
-    function processData(entry) {
+    var processData = function (entry) {
         var convertedData = _.clone(entry, true);
 
         if (convertedData.dtm)
@@ -108,6 +93,19 @@ exports.convert = function () {
         delete convertedData.raw_data;
 
         return convertedData;
-    }
+    };
 
+    var convertedData;
+
+    if (_.isArray(data)){
+        convertedData = [];
+
+        data.forEach(function (dataEntry) {
+            convertedData.push(processData(dataEntry));
+        });
+    }
+    else
+        convertedData = processData(data);
+
+    exit(convertedData);
 };
