@@ -1,5 +1,5 @@
 exports.convert = function () {
-    var convertedData = _.extend({}, data);
+    var convertedData = _.clone(data, true);
 
     if (convertedData.dtm)
         convertedData.dtm = moment(convertedData.dtm, 'HHmmssDDMMYY').toDate();
@@ -55,7 +55,6 @@ exports.convert = function () {
     if (convertedData.rsi2_signal)
         convertedData.rsi2_signal = parseFloat(convertedData.rsi2_signal);
 
-
     if (convertedData.mcc3_ctry)
         convertedData.mcc3_ctry = parseInt(convertedData.mcc3_ctry);
 
@@ -68,13 +67,11 @@ exports.convert = function () {
     if (convertedData.odometer)
         convertedData.odometer = parseInt(convertedData.odometer);
 
-
     if (convertedData.ext_pow_volt)
         convertedData.ext_pow_volt = parseFloat(convertedData.ext_pow_volt);
 
     if (convertedData.bkp_bat_volt)
         convertedData.bkp_bat_volt = parseFloat(convertedData.bkp_bat_volt);
-
 
     if (convertedData.dev_status)
         convertedData.dev_status = parseInt(convertedData.dev_status);
@@ -91,9 +88,7 @@ exports.convert = function () {
     if (convertedData.packet_type)
         convertedData.packet_type = parseInt(convertedData.packet_type);
 
-    if (convertedData.raw_data_entry)
-        delete convertedData.raw_data_entry;
-
+    delete convertedData.raw_data_entry;
     delete convertedData.raw_data;
 
     exit(convertedData);

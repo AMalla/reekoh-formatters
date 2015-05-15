@@ -1,5 +1,5 @@
 exports.convert = function () {
-    var convertedData = _.extend({}, data);
+	var convertedData = _.clone(data, true);
 
     if (convertedData.dtm)
         convertedData.dtm = moment(convertedData.dtm, 'YYMMDDHHmmss').toDate();
@@ -38,7 +38,7 @@ exports.convert = function () {
         convertedData.run_time = parseInt(convertedData.run_time);
 
     if (convertedData.protocol)
-        convertedData.protocl = parseInt(convertedData.protocl);
+        convertedData.protocol = parseInt(convertedData.protocol);
 
     delete convertedData.raw_data;
 
