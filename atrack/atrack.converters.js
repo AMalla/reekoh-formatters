@@ -1,38 +1,55 @@
 exports.convert = function () {
-	var convertedData = _.clone(data, true);
 
-	if (convertedData.gps_dtm)
-		convertedData.gps_dtm = moment(convertedData.gps_dtm, 'YYYYMMDDHHmmss').toDate();
+	var convertedDataArr = [];
 
-	if (convertedData.dtm)
-		convertedData.dtm = moment(convertedData.dtm, 'YYYYMMDDHHmmss').toDate();
+	if (_.isArray(data)){
 
-	if (convertedData.position_dtm)
-		convertedData.position_dtm = moment(convertedData.position_dtm, 'YYYYMMDDHHmmss').toDate();
+		data.forEach(function (dataEntry) {
+			convertedDataArr.push(processData(dataEntry));
+		});
 
-	if (convertedData.coordinates[0])
-		convertedData.coordinates[0] = parseFloat(convertedData.coordinates[0]);
+	}else{
+		convertedDataArr.push(processData(data));
+	}
 
-	if (convertedData.coordinates[1])
-		convertedData.coordinates[1] = parseFloat(convertedData.coordinates[1]);
+	exit(convertedDataArr);
 
-	if (convertedData.heading)
-		convertedData.heading = parseInt(convertedData.heading);
+	function processData(entry) {
+		var convertedData = _.clone(entry, true);
 
-	if (convertedData.event_code)
-		convertedData.event_code = parseInt(convertedData.event_code);
+		if (convertedData.gps_dtm)
+			convertedData.gps_dtm = moment(convertedData.gps_dtm, 'YYYYMMDDHHmmss').toDate();
 
-	if (convertedData.odometer)
-		convertedData.odometer = parseInt(convertedData.odometer);
+		if (convertedData.dtm)
+			convertedData.dtm = moment(convertedData.dtm, 'YYYYMMDDHHmmss').toDate();
 
-	if (convertedData.gps_hdop)
-		convertedData.gps_hdop = parseInt(convertedData.gps_hdop);
+		if (convertedData.position_dtm)
+			convertedData.position_dtm = moment(convertedData.position_dtm, 'YYYYMMDDHHmmss').toDate();
 
-	if (convertedData.speed)
-		convertedData.speed = parseInt(convertedData.speed);
+		if (convertedData.coordinates[0])
+			convertedData.coordinates[0] = parseFloat(convertedData.coordinates[0]);
 
-	delete convertedData.raw_data;
-	delete convertedData.raw_data_entry;
+		if (convertedData.coordinates[1])
+			convertedData.coordinates[1] = parseFloat(convertedData.coordinates[1]);
 
-	exit(convertedData);
+		if (convertedData.heading)
+			convertedData.heading = parseInt(convertedData.heading);
+
+		if (convertedData.event_code)
+			convertedData.event_code = parseInt(convertedData.event_code);
+
+		if (convertedData.odometer)
+			convertedData.odometer = parseInt(convertedData.odometer);
+
+		if (convertedData.gps_hdop)
+			convertedData.gps_hdop = parseInt(convertedData.gps_hdop);
+
+		if (convertedData.speed)
+			convertedData.speed = parseInt(convertedData.speed);
+
+		delete convertedData.raw_data;
+		delete convertedData.raw_data_entry;
+
+		return convertedData;
+	}
 };
