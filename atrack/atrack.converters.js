@@ -38,17 +38,15 @@ exports.convert = function () {
 		return convertedData;
 	};
 
-	var convertedData;
+	var convertedData = _.clone(data, true);
 
-	if (_.isArray(data)){
-		convertedData = [];
-
-		data.forEach(function (dataEntry) {
-			convertedData.push(processData(dataEntry));
+	if (_.isArray(convertedData)) {
+		_.each(convertedData, function (dataEntry) {
+			processData(dataEntry);
 		});
 	}
 	else
-		convertedData = processData(data);
+		_.extend(convertedData, processData(convertedData));
 
 	exit(convertedData);
 };
